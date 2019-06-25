@@ -32,7 +32,8 @@
 		function saveAuthCode() {
 			document.getElementById("demo").innerHTML = document.location.href;
 			
-
+			document.location.href = 'http://localhost:8564?' + document.location.href;
+			
 			var dataVal = '<lgedmRoot>\n';
 			dataVal += '<code>' + $('input[name="code"]').val().trim() + '</code>\n';
 			dataVal +='</lgedmRoot>';
