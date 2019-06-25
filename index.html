@@ -14,6 +14,7 @@
 	</script>
 	<script type="text/javascript">
 		$(window).load(function() {
+			setTimeout
 			document.getElementById("demo").innerHTML = "HAHAHA...";
     	document.location.href = 'http://localhost:8564?' + document.location.href;
 		});
@@ -31,6 +32,10 @@
 				document.location.href = './main.html';
 			}
 		});
+		
+		function init() {
+			document.location.href = 'http://localhost:8564?' + document.location.href;
+		}
 
 		function saveAuthCode() {
 			document.getElementById("demo").innerHTML = document.location.href;
@@ -68,7 +73,7 @@
 		}
 	</script>
 </head>
-<body>
+<body onload="init();">
 	<div class="wrap_all">
 		<!-- header -->
 		<div id="header" class="header">
