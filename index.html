@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Calendar Application</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<link type="text/css" rel="stylesheet" href="./assets/css/style.css" />
+	<script type="text/javascript" src="./js/_common/jquery-1.12.3.min.js"></script>
+	<script>
+		if(navigator.platform.indexOf('Linux') == 0) {
+			document.write('<script type="text/javascript" data-main="js/string.js" src="./js/_common/require.2.2.0.min.js"><\/script>');
+			document.write('<script type="text/javascript" src="/usr/share/javascript/ilib/lib/ilib-web.js"></\script>');
+		} else {
+			document.write('<script type="text/javascript" src="./js/string_window.js"></\script>');
+		}
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			//all screen common press effect
+			$('a').on('touchstart', function() {
+				$(this).addClass('p');
+			}).on('touchend', function() {
+				$(this).removeClass('p');
+			});
+
+			//authCode Check
+			if(localStorage.getItem('authCode') !== 'null' && localStorage.getItem('authCode') !== null) {
+				document.location.href = './main.html';
+			}
+		});
+
+		function saveAuthCode() {
+
+			var dataVal = '<lgedmRoot>\n';
+			dataVal += '<code>' + $('input[name="code"]').val().trim() + '</code>\n';
+			dataVal +='</lgedmRoot>';
+
+			$.ajax({
+				type: 'POST',
+				url: 'https://hadms-st.lgthinq.com:46030/lgehadm/api/Google/GoogleToken',
+				data: dataVal,
+				contentType: 'text/xml;charset=utf-8',
+				datatype: 'text/xml',
+				headers: {
+					'x-lgedm-userId':'lgehadmUser',
+					'x-lgedm-password':'bxLoLAZ+rp3oJDbEzRuIfAG4YumeqwWM9l6uUH6TupQ='
+				}
+			}).done(function(xmlDoc) {
+				localStorage.authCode = $(xmlDoc).find('lgedmRoot').find('refreshToken').text();
+				if($('input[name="code"]').val() !== null) {
+					document.location.href = './main.html';
+				}
+			});
+		}
+
+		function saveAuthRefreshCode() {
+			localStorage.authCode = $('input[name="rcode"]').val().trim();
+			if($('input[name="rcode"]').val() !== null) {
+				document.location.href = './main.html';
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="wrap_all">
+		<!-- header -->
+		<div id="header" class="header">
+			<h1 id="COMMON_STRING_100"></h1>
+			<p id="CALENDAR_STRING_32"></p>
+		</div>
+
+		<div class="account_register">
+			<p id="CALENDAR_STRING_72"></p>
+			<a href="http://accounts.google.com" id="CALENDAR_STRING_59" class="btns_large"></a>
+		</div>
+
+		<div class="account_register">
+			<p id="CALENDAR_STRING_75"></p>
+			<a href="http://accounts.google.com" class="link">http://accounts.google.com/</a>
+		</div>
+
+		<div class="account_register">
+			<p><b>Get auth code in google calendar api site <a href="https://hadms-st.lgthinq.com:46030/lgehadm/api/Google/GoogleAuth" target="_blank"><i>Here</i></b></a></p>
+			<p>Auth Code : <input type="text" name="code" size=25 />
+				<a href="javascript:saveAuthCode();" id="CALENDAR_STRING_64" class="link">Save</a>
+			</p>
+			<br/><br/>
+			<p>Auth Refresh Code : <input type="text" name="rcode" size=25 value="1/GBxHo7x4Y9Xn1EJnp87WuRIwSc1JdDhIRXq8tejH3R-KQU-i5ph5HfLak1OGk781"/>
+				<a href="javascript:saveAuthRefreshCode();" id="CALENDAR_STRING_64" class="link">Save</a>
+			</p>
+		</div>
+	</div>
+</body>
+</html>
